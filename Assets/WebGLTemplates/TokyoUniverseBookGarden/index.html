@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo University Book Garden | {{{ PRODUCT_NAME }}}</title>
+    <meta name="description" content="東京大学図書館庭園へようこそ。知識の庭園で新しい発見をお楽しみください。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d30 25%, #1e2124 50%, #36393f 75%, #2c2f33 100%);
+        color: #e8e8e8;
+        overflow: hidden;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .background-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          radial-gradient(circle at 20% 80%, rgba(150, 150, 150, 0.08) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(120, 120, 120, 0.06) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(100, 100, 100, 0.04) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .header {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        padding: 25px;
+        background: rgba(20, 20, 20, 0.7);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(150, 150, 150, 0.2);
+      }
+
+      .title {
+        font-family: 'Cinzel', serif;
+        font-size: 2.2rem;
+        font-weight: 500;
+        background: linear-gradient(45deg, #c9c9c9, #f0f0f0, #d4d4d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        text-shadow: 0 0 20px rgba(200, 200, 200, 0.2);
+        letter-spacing: 2px;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: #b0b0b0;
+        font-weight: 300;
+        letter-spacing: 1.5px;
+      }
+
+      .game-container {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        min-height: calc(100vh - 120px);
+      }
+
+      .game-frame {
+        background: rgba(25, 25, 25, 0.8);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 
+          0 10px 40px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(150, 150, 150, 0.2);
+        position: relative;
+      }
+
+      .game-frame::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        background: linear-gradient(45deg, rgba(180, 180, 180, 0.3), transparent, rgba(160, 160, 160, 0.2), transparent);
+        border-radius: 13px;
+        z-index: -1;
+        animation: subtleBorderGlow 4s ease-in-out infinite alternate;
+      }
+
+      @keyframes subtleBorderGlow {
+        0% { opacity: 0.3; }
+        100% { opacity: 0.6; }
+      }
+
+      .fullscreen-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(60, 60, 60, 0.8);
+        border: 1px solid rgba(140, 140, 140, 0.4);
+        color: #d0d0d0;
+        padding: 12px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(8px);
+        z-index: 15;
+      }
+
+      .fullscreen-btn:hover {
+        background: rgba(80, 80, 80, 0.9);
+        border-color: rgba(160, 160, 160, 0.6);
+        color: #f0f0f0;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .fullscreen-active {
+        background: rgba(100, 100, 100, 0.8) !important;
+        border-color: rgba(170, 170, 170, 0.6) !important;
+        color: #ffffff !important;
+      }
+
+      /* 全画面表示時のスタイル */
+      .game-frame:fullscreen,
+      .game-frame:-webkit-full-screen,
+      .game-frame:-moz-full-screen,
+      .game-frame:-ms-fullscreen {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: black !important;
+        z-index: 9999 !important;
+      }
+
+      .game-frame:fullscreen #unity-canvas,
+      .game-frame:-webkit-full-screen #unity-canvas,
+      .game-frame:-moz-full-screen #unity-canvas,
+      .game-frame:-ms-fullscreen #unity-canvas {
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        object-fit: contain !important;
+        display: block !important;
+      }
+
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(20, 20, 20, 0.85);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 20;
+        border-radius: 12px;
+      }
+
+      .loading-text {
+        color: #c0c0c0;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+        font-weight: 300;
+        letter-spacing: 1px;
+      }
+
+      .loading-spinner {
+        width: 45px;
+        height: 45px;
+        border: 3px solid rgba(120, 120, 120, 0.3);
+        border-top: 3px solid #a0a0a0;
+        border-radius: 50%;
+        animation: spin 1.2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .fullscreen-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 215, 0, 0.2);
+        border: 2px solid rgba(255, 215, 0, 0.5);
+        color: #ffd700;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        z-index: 15;
+      }
+
+      .fullscreen-btn:hover {
+        background: rgba(255, 215, 0, 0.3);
+        border-color: #ffd700;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+      }
+
+      .fullscreen-active {
+        background: rgba(255, 215, 0, 0.4) !important;
+        border-color: #ffd700 !important;
+      }
+
+      @media (max-width: 768px) {
+        .title {
+          font-size: 1.6rem;
+          letter-spacing: 1px;
+        }
+        
+        .subtitle {
+          font-size: 0.9rem;
+          letter-spacing: 1px;
+        }
+        
+        .header {
+          padding: 18px;
+        }
+        
+        .game-frame {
+          padding: 15px;
+          margin: 10px;
+        }
+
+        .fullscreen-btn {
+          padding: 10px 14px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-pattern"></div>
+
+    <header class="header">
+      <h1 class="title">Tokyo University Book Garden</h1>
+      <p class="subtitle">知識の庭園で新しい発見を</p>
+      <button id="fullscreen-btn" class="fullscreen-btn">🔍 全画面表示</button>
+    </header>
+
+    <div class="game-container">
+      <div class="game-frame">
+        <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} tabindex="-1" style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}; border-radius: 10px;"></canvas>
+        <div id="loading-overlay" class="loading-overlay">
+          <div class="loading-text">図書館庭園を準備中...</div>
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </div>
+    <script src="Build/{{{ LOADER_FILENAME }}}"></script>
+    <script>
+      // モバイルデバイス対応
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+
+        var canvas = document.querySelector("#unity-canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.position = "fixed";
+
+        var gameContainer = document.querySelector(".game-container");
+        gameContainer.style.padding = "10px";
+      }
+
+      // ローディング状態を管理
+      var loadingOverlay = document.getElementById("loading-overlay");
+      var fullscreenBtn = document.getElementById("fullscreen-btn");
+      var gameFrame = document.querySelector(".game-frame");
+      var canvas = document.querySelector("#unity-canvas");
+      
+      // 全画面機能
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          // 全画面表示
+          if (gameFrame.requestFullscreen) {
+            gameFrame.requestFullscreen();
+          } else if (gameFrame.webkitRequestFullscreen) { // Safari
+            gameFrame.webkitRequestFullscreen();
+          } else if (gameFrame.msRequestFullscreen) { // IE11
+            gameFrame.msRequestFullscreen();
+          }
+        } else {
+          // 全画面解除
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) { // Safari
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) { // IE11
+            document.msExitFullscreen();
+          }
+        }
+      }
+
+      // 全画面状態変更の監視
+      function handleFullscreenChange() {
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+          fullscreenBtn.textContent = "🔍 ウィンドウ表示";
+          fullscreenBtn.classList.add("fullscreen-active");
+          
+          // 全画面時の調整
+          gameFrame.style.position = "fixed";
+          gameFrame.style.top = "0";
+          gameFrame.style.left = "0";
+          gameFrame.style.width = "100vw";
+          gameFrame.style.height = "100vh";
+          gameFrame.style.padding = "0";
+          gameFrame.style.margin = "0";
+          gameFrame.style.borderRadius = "0";
+          gameFrame.style.border = "none";
+          gameFrame.style.background = "black";
+          
+          // キャンバスも画面サイズに調整
+          canvas.style.width = "100vw";
+          canvas.style.height = "100vh";
+          canvas.style.borderRadius = "0";
+          canvas.style.objectFit = "contain";
+          canvas.style.display = "block";
+          
+        } else {
+          fullscreenBtn.textContent = "🔍 全画面表示";
+          fullscreenBtn.classList.remove("fullscreen-active");
+          
+          // 通常表示に戻す
+          gameFrame.style.position = "";
+          gameFrame.style.top = "";
+          gameFrame.style.left = "";
+          gameFrame.style.width = "";
+          gameFrame.style.height = "";
+          gameFrame.style.padding = "25px";
+          gameFrame.style.margin = "";
+          gameFrame.style.borderRadius = "12px";
+          gameFrame.style.border = "1px solid rgba(150, 150, 150, 0.2)";
+          gameFrame.style.background = "rgba(25, 25, 25, 0.8)";
+          
+          // キャンバスも元のサイズに戻す
+          canvas.style.width = "{{{ WIDTH }}}px";
+          canvas.style.height = "{{{ HEIGHT }}}px";
+          canvas.style.borderRadius = "10px";
+          canvas.style.objectFit = "";
+        }
+      }
+
+      // イベントリスナー設定
+      fullscreenBtn.addEventListener('click', toggleFullscreen);
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.addEventListener('msfullscreenchange', handleFullscreenChange);
+      
+      // Unity インスタンス作成
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/{{{ DATA_FILENAME }}}",
+        frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+        workerUrl: "Build/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+        codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#endif
+#if MEMORY_FILENAME
+        memoryUrl: "Build/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+        // matchWebGLToCanvasSize: false, // WebGL キャンバスのサイズを個別に制御する場合はコメントアウト
+        // devicePixelRatio: 1, // 高DPIディスプレイでの低DPIレンダリングを上書きする場合はコメントアウト
+      }).then((unityInstance) => {
+        // ロード完了時の処理
+        if (loadingOverlay) {
+          loadingOverlay.style.opacity = '0';
+          setTimeout(() => {
+            loadingOverlay.style.display = 'none';
+          }, 500);
+        }
+        
+        // ゲーム開始の歓迎メッセージ（オプション）
+        console.log("🌸 Tokyo University Book Garden へようこそ！🌸");
+        
+      }).catch((message) => {
+        // エラーハンドリング
+        console.error("Unity インスタンスの作成に失敗しました:", message);
+        if (loadingOverlay) {
+          var loadingText = loadingOverlay.querySelector('.loading-text');
+          if (loadingText) {
+            loadingText.textContent = 'エラーが発生しました。ページを再読み込みしてください。';
+            loadingText.style.color = '#ff6b6b';
+          }
+        }
+      });
+
+      // ページ読み込み完了時のアニメーション
+      window.addEventListener('load', function() {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.8s ease-in-out';
+        
+        setTimeout(() => {
+          document.body.style.opacity = '1';
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
