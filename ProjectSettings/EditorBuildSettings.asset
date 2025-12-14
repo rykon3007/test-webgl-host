@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Main/Scenes/Main.unity
     guid: 8b6569d6251ff674f89470be35e02dc5
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Main/Scenes/PaintingWorld.unity
     guid: ca304f8b0e6b65a4ab43549241e84765
   m_configObjects:
