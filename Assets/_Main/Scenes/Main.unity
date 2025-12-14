@@ -27788,7 +27788,7 @@ Transform:
   m_GameObject: {fileID: 530476753}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48213,7 +48213,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u672C\u90F7\u3000\u30B8\u30E3\u30F3\u30EB\u5225\u58F2\u4E0A\u5360\u6709\u7387\n(2003~2024)"
+  m_text: "\u672C\u90F7\u3000\u30B8\u30E3\u30F3\u30EB\u5225\u58F2\u4E0A\u5360\u6709\u7387\n(2003~2024\u5E74)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4814568af5bee53469a6f6ee2126fadd, type: 2}
   m_sharedMaterial: {fileID: -2911032504528846027, guid: 4814568af5bee53469a6f6ee2126fadd, type: 2}
@@ -85018,7 +85018,7 @@ Transform:
   m_GameObject: {fileID: 1665198995}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -97041,7 +97041,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u99D2\u5834\u3000\u30B8\u30E3\u30F3\u30EB\u5225\u58F2\u4E0A\u5360\u6709\u7387\n(2003~2024)"
+  m_text: "\u99D2\u5834\u3000\u30B8\u30E3\u30F3\u30EB\u5225\u58F2\u4E0A\u5360\u6709\u7387\n(2003~2024\u5E74)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4814568af5bee53469a6f6ee2126fadd, type: 2}
   m_sharedMaterial: {fileID: -2911032504528846027, guid: 4814568af5bee53469a6f6ee2126fadd, type: 2}
